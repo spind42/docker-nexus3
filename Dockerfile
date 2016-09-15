@@ -1,7 +1,10 @@
 FROM       centos:centos7
-MAINTAINER Sonatype <cloud-ops@sonatype.com>
+#MAINTAINER Sonatype <cloud-ops@sonatype.com>
+MAINTAINER Stephan Spindler <spind42@gmail.com>
 
 ENV NEXUS_DATA /nexus-data
+
+ENV NEXUS_ETC /nexus-etc
 
 ENV NEXUS_VERSION 3.0.1-01
 
@@ -35,8 +38,8 @@ RUN mkdir -p /opt/sonatype/nexus \
 RUN sed \
     -e "s|karaf.home=.|karaf.home=/opt/sonatype/nexus|g" \
     -e "s|karaf.base=.|karaf.base=/opt/sonatype/nexus|g" \
-    -e "s|karaf.etc=etc|karaf.etc=/opt/sonatype/nexus/etc|g" \
-    -e "s|java.util.logging.config.file=etc|java.util.logging.config.file=/opt/sonatype/nexus/etc|g" \
+    -e "s|karaf.etc=etc|karaf.etc=${NEXUS_ETC}|g" \
+    -e "s|java.util.logging.config.file=etc|java.util.logging.config.file=${NEXUS_ETC}|g" \
     -e "s|karaf.data=data|karaf.data=${NEXUS_DATA}|g" \
     -e "s|java.io.tmpdir=data/tmp|java.io.tmpdir=${NEXUS_DATA}/tmp|g" \
     -i /opt/sonatype/nexus/bin/nexus.vmoptions
